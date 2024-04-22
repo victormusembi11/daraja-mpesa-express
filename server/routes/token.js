@@ -4,6 +4,6 @@ const { createToken } = require("../middlewares/stk-token");
 
 const router = express.Router();
 
-router.post("/token", createToken);
+router.get("/token", createToken);
 
 module.exports = router;
