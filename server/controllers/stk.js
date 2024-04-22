@@ -9,7 +9,7 @@ const stkPush = async (req, res) => {
   const shortCode = process.env.SHORTCODE;
   const passkey = process.env.PASSKEY;
   const { phone, amount } = req.body;
-  const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+  const url = process.env.STK_TRIGGER_URL;
   const timestamp = generateTimestamp();
   const password = new Buffer.from(shortCode + passkey + timestamp).toString(
     "base64"
@@ -24,7 +24,7 @@ const stkPush = async (req, res) => {
     PartyA: `254${phone}`,
     PartyB: shortCode,
     PhoneNumber: `254${phone}`,
-    CallBackURL: "https://mydomain.com/pat",
+    CallBackURL: process.env.STK_CALLBACK_URL,
     AccountReference: "Test",
     TransactionDesc: "Test",
   };
@@ -47,4 +47,10 @@ const stkPush = async (req, res) => {
   }
 };
 
-module.exports = { stkPush };
+const confirmPayment = async (req, res) => {
+  console.log("callback triggered");
+  console.log(req.body);
+  res.status(200).send("Payment confirmed");
+};
+
+module.exports = { stkPush, confirmPayment };
