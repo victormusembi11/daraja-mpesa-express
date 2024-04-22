@@ -9,7 +9,7 @@ const createToken = async (req, res, next) => {
 
   try {
     const response = await axios({
-      url: "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+      url: process.env.STK_TOKEN_URL,
       method: "GET",
       headers: {
         Authorization: `Basic ${Buffer.from(`${consumer}:${secret}`).toString(
@@ -18,7 +18,6 @@ const createToken = async (req, res, next) => {
       },
     });
 
-    req.token = response.data.access_token;
     console.log(response.data);
     next();
   } catch (error) {
